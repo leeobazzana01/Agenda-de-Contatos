@@ -1,38 +1,52 @@
-from classes import pessoa, gerenciadorpessoas
+from classes import GerenciadorPessoas
+
+def menu():
+    print("\nSelecione uma opção:")
+    print("1. Adicionar Contato")
+    print("2. Buscar Contato")
+    print("3. Listar Contatos")
+    print("4. Remover Contato")
+    print("5. Sair")
+    return input("Opção: ")
 
 def main():
-    contador_usuarios = 0
-
+    agenda = GerenciadorPessoas()
     print("AGENDA DE CONTATOS SIMPLES")
-    inicio = input("Iniciar (S) ou encerrar a execução(N)\n").upper()
 
-    while(inicio == "S"):
-
+    while True:
         try:
-            opcao = int(input("Selecione uma opção: \n1. Adicionar Contato\n2. Buscar Contato\n3. Listar Contatos\n4. Remover Contatos\n"))
+            opcao = menu()
 
-            match opcao:
-                case 1:
-                    usuarios = int(input("Quantos Contatos deseja adicionar?"))
+            if opcao == "1":
+                nome = input("Nome: ")
+                sobrenome = input("Sobrenome: ")
+                email = input("Email: ")
+                numero = input("Número: ")
+                agenda.adiciona_pessoa(nome, sobrenome, email, numero)
 
-                    while(contador_usuarios < usuarios):
-                        nome = input("Nome: ")
-                        sobrenome = input("Sobrenome: ")
-                        email = input("Email: ")
-                        numero = int(input("Numero: "))
-                        gerenciadorpessoas.adicionar_pessoa(pessoa(contador_usuarios, nome, sobrenome, email, numero))
-                        contador_usuarios += 1
-                case 2:
-                    pass
-                case 3:
-                    print(gerenciadorpessoas.mostrar_registro())
-                case 4:
-                    pass
-                case _:
-                    print("Opção Inválida")
-    
-        except:
-            raise TypeError("Tipo Inserido Inválido")
-        
-        inicio = input("Deseja continuar a Execução? (S)Sim ou (N)Não\n").upper()    
-main()
+            elif opcao == "2":
+                termo = input("Digite o nome ou sobrenome para buscar: ")
+                agenda.buscar_pessoa(termo)
+
+            elif opcao == "3":
+                agenda.mostrar_registro()
+
+            elif opcao == "4":
+                try:
+                    id_remover = int(input("Digite o ID do contato a remover: "))
+                    agenda.remover_pessoa(id_remover)
+                except ValueError:
+                    print("ID inválido.")
+
+            elif opcao == "5":
+                print("Encerrando a execução.")
+                break
+
+            else:
+                print("Opção inválida. Tente novamente.")
+
+        except Exception as e:
+            print(f"Erro durante a execução: {e}")
+
+if __name__ == "__main__":
+    main()

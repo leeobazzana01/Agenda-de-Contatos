@@ -1,42 +1,49 @@
-class pessoa:
+class Pessoa:
     def __init__(self, id, nome, sobrenome, email, numero):
         self.id = id
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email 
-        self.numero
+        self.numero = numero
 
     def __str__(self):
-        return f"ID: {self.id} | Nome: {self.nome} | Sobrenome: {self.sobrenome} | Email: {self.email} | Numero: {self.numero}" 
+        return (
+            f"ID: {self.id} | Nome: {self.nome} {self.sobrenome} | " 
+            f"Email: {self.email} | Numero: {self.numero}"
+            ) 
     
-class gerenciador_pessoas:
+class GerenciadorPessoas:
     def __init__(self):
         self.registro = {}
+        self.proximo_id = 1
 
-    def adiciona_pessoa(self, pessoa):
-        if pessoa.id in self.regristro:
-            print(f"O contado '{pessoa.nome}' já existe na Agenda!!")
-            return False
-        
-        self.registro[pessoa.id] = pessoa
-        print(f"Contato '{pessoa.nome}' adicionado com sucesso!")
-        return True
-    
+    def adiciona_pessoa(self, nome, sobrenome, email, numero):
+        nova_pessoa = Pessoa(self.proximo_id, nome, sobrenome, email, numero)
+        self.registro[self.proximo_id] = nova_pessoa
+        print(f"Contato '{nome}' adicionado com sucesso! ID: {self.proximo_id}")
+        self.proximo_id += 1
+
+    def buscar_pessoa(self, termo):
+        resultados = [p for p in self.registro.values()
+                      if termo.lower() in p.nome.lower() or termo.lower() in p.sobrenome.lower()]
+        if resultados:
+            for p in resultados:
+                print(p)
+        else:
+            print("Nenhum contato encontrado.")
+
     def remover_pessoa(self, id):
         if id in self.registro:
             pessoa_removida = self.registro.pop(id)
-            print(f"O Contato '{pessoa_removida.nome} foi removido com sucesso!!")
-            return True
-
-        print(f"Erro: ID {id} não encontrado!")
-        return False
+            print(f"Contato '{pessoa_removida.nome}' removido com sucesso.")
+        else:
+            print(f"Contato com ID {id} não encontrado.")
 
     def mostrar_registro(self):
-        print("CONTATOS NA AGENDA")
-        
-        for id, pessoa in self.registro.items():
-            print(pessoa)
-        
-        print("------------------\n")
-
+        if not self.registro:
+            print("Agenda vazia.")
+        else:
+            print("CONTATOS NA AGENDA:")
+            for pessoa in self.registro.values():
+                print(pessoa)
 
