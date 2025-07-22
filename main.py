@@ -1,30 +1,8 @@
-lista_contatos = []
-
-def adiciona_contato():
-    contador = 0
-    try:
-        quantidade = int(input("Quantidade de Contatos que deseja Adicionar: "))
-
-        while(contador < quantidade):
-            nome = input("Nome: ")
-            lista_contatos.append({"Nome":{nome}})
-            sobrenome = input("Sobrenome: ")
-            lista_contatos.append({"Sobrenome":{sobrenome}})
-            email = input("Email: ")
-            lista_contatos.append({"Email":{email}})
-            try:
-                contato = int(input("Contato(DDD): "))
-                lista_contatos.append({"Contato":{contato}})
-            except:
-                raise TypeError("Insira um Número no contato")
-            print(f"O Contato {nome} {sobrenome} foi inserido com sucesso!")
-
-            contador += 1
-            
-    except:
-        raise TypeError("Quantidade de Contatos Inválida!")
+from classes import pessoa, gerenciadorpessoas
 
 def main():
+    contador_usuarios = 0
+
     print("AGENDA DE CONTATOS SIMPLES")
     inicio = input("Iniciar (S) ou encerrar a execução(N)\n").upper()
 
@@ -35,11 +13,19 @@ def main():
 
             match opcao:
                 case 1:
-                    print(adiciona_contato())
+                    usuarios = int(input("Quantos Contatos deseja adicionar?"))
+
+                    while(contador_usuarios < usuarios):
+                        nome = input("Nome: ")
+                        sobrenome = input("Sobrenome: ")
+                        email = input("Email: ")
+                        numero = int(input("Numero: "))
+                        gerenciadorpessoas.adicionar_pessoa(pessoa(contador_usuarios, nome, sobrenome, email, numero))
+                        contador_usuarios += 1
                 case 2:
                     pass
                 case 3:
-                    print(lista_contatos)
+                    print(gerenciadorpessoas.mostrar_registro())
                 case 4:
                     pass
                 case _:
